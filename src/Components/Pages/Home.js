@@ -2,7 +2,7 @@ import React from 'react'
 import  Header  from "../HomePage/Header";
 import What from '../HomePage/What'
 import Service from '../HomePage/Service'
-import Review from '../HomePage/Review';
+// import Review from '../HomePage/Review';
 const Home = () => {
     return (
         <div>
@@ -12,7 +12,7 @@ const Home = () => {
             <hr></hr>
             <Service/>
             <hr></hr>
-            <Review/>
+            {/* <Review/> */}
         </div>
     )
 }

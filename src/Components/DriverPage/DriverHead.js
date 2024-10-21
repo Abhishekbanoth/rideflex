@@ -1,7 +1,7 @@
 import React from 'react';
 import img from '../Images/DBook.png';
 
-function Ride4() {
+function DriverHead({ scrollToForm }) {
     return (
         <>
             <div className="d-flex justify-content-center" style={{backgroundColor:"black",marginTop:"100px"}}>
@@ -23,7 +23,7 @@ function Ride4() {
                             <div>
                                 <h5 className="card-title fs-2 fw-bolder " style={{color:"white"}}>Become A Proffesional Driver</h5>
                                 <p className="card-text "style={{color:"white"}}>Join our Platform and Start Earning by Driving</p>
-                                <a href="/" className="btn btn-primary mx-3 my-2 " style={styles.button}>Apply Now</a>
+                                <button  className="btn btn-primary mx-3 my-2 " style={styles.button} onClick={scrollToForm}>Apply Now</button>
                             </div>
                         </div>                       
                     </div>
@@ -69,4 +69,4 @@ const styles = {
     },
 };
 
-export default Ride4;
+export default DriverHead;

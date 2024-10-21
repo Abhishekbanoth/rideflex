@@ -1,12 +1,23 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import img1 from '../Images/rideflex.png';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import NProgress from 'nprogress';
 import 'nprogress/nprogress.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const NavBar = () => {
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const navigate = useNavigate();
 
+    // Check login state on component mount
+    useEffect(() => {
+        const loggedInStatus = localStorage.getItem('isLoggedIn');
+        if (loggedInStatus === 'true') {
+            setIsLoggedIn(true);
+        }
+    }, []);
+
+    // NProgress configuration and handler for link clicks
     const handleLinkClick = () => {
         NProgress.start();
         setTimeout(() => {
@@ -14,6 +25,14 @@ const NavBar = () => {
         }, 500); // Adjust the timeout based on your actual loading time
     };
     NProgress.configure({ showSpinner: false, speed: 500, minimum: 0.1 });
+
+    // Logout functionality
+    const handleLogout = () => {
+        localStorage.setItem('isLoggedIn', 'false'); // Clear login state
+        setIsLoggedIn(false); // Update state
+        alert('Logged out successfully!');
+        navigate('/login'); // Redirect to login page
+    };
 
     return (
         <div>
@@ -59,13 +78,14 @@ const NavBar = () => {
                             <li className="nav-item" style={{ marginLeft: "10px" }}>
                                 <Link className="nav-link" to="/driver" onClick={handleLinkClick}>Driver</Link>
                             </li>
-                            {/* <li className="nav-item" style={{ marginLeft: "10px" }}>
-                                <Link className="nav-link" to="" onClick={handleLinkClick}>Landing</Link>
-                            </li> */}
                         </ul>
                         <ul className="navbar-nav ms-auto">
                             <li className="nav-item">
-                                <Link className="nav-link" style={{marginRight:"10px"}} to="/login" onClick={handleLinkClick}>Login</Link>
+                                {isLoggedIn ? (
+                                    <button className="nav-link btn btn-link" style={{ marginRight: "10px", color: 'white' }} onClick={handleLogout}>Logout</button>
+                                ) : (
+                                    <Link className="nav-link" style={{ marginRight: "10px" }} to="/login" onClick={handleLinkClick}>Login</Link>
+                                )}
                             </li>
                         </ul>
                     </div>
@@ -73,6 +93,6 @@ const NavBar = () => {
             </nav>
         </div>
     );
-}
+};
 
 export default NavBar;

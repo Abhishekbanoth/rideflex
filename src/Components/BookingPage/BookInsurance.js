@@ -4,8 +4,8 @@ import img from '../Images/DBook.png';
 function Ride4() {
     return (
         <>
-            <div className="d-flex justify-content-center" style={{backgroundColor:"black",marginTop:"100px"}}>
-                <div className="container p-3 mb-5 " 
+            <div className="d-flex justify-content-center" style={{backgroundColor:"black",}}>
+                <div className="container p-3  " 
                 // style={styles.card}
                 >
                     <div className="row g-0 h-100">

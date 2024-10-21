@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import CustomAlert from '../CustomAlert'; // Import your custom alert
 const styles = {
     body: {
         margin: 0,
@@ -150,6 +151,8 @@ const styles = {
 
 };
 
+
+
 const Login = () => {
     const [isSignUp, setIsSignUp] = useState(false);
     const [windowWidth, setWindowWidth] = React.useState(window.innerWidth);
@@ -160,7 +163,8 @@ const Login = () => {
         password: '',
         confirmpassword: ''
     });
-    const navigate=useNavigate();
+    const [alertMessage, setAlertMessage] = useState(null); // To store alert message
+    const navigate = useNavigate();
 
     React.useEffect(() => {
         const handleResize = () => setWindowWidth(window.innerWidth);
@@ -184,11 +188,12 @@ const Login = () => {
                     'Content-Type': 'application/json',
                 }
             });
-            alert('User registered successfully!');
+            setAlertMessage('User registered successfully!'); // Display success alert
+            localStorage.setItem('username', response.data.name);
             console.log(response);
         } catch (error) {
+            setAlertMessage('Enter Valid Details'); // Display error alert
             console.error('Error:', error.response ? error.response.data : error.message);
-            alert('Enter Valid Details');
         }
     };
 
@@ -203,12 +208,12 @@ const Login = () => {
                     'Content-Type': 'application/json',
                 }
             });
-            alert('Login successful!');
+            setAlertMessage('Login successful!'); // Display success alert
             console.log(response);
             navigate('/home');
         } catch (error) {
+            setAlertMessage('Invalid Credentials'); // Display error alert
             console.error('Error:', error.response ? error.response.data : error.message);
-            alert('Invalid Credentials');
         }
     };
 
@@ -321,6 +326,9 @@ const Login = () => {
                     </button>
                 </div>
             </div>
+
+            {/* Custom Alert */}
+            {alertMessage && <CustomAlert message={alertMessage} onClose={() => setAlertMessage(null)} />}
         </div>
     );
 };

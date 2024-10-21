@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import Profile from '../Images/driver.jpg'
+import Profile from '../Images/driver.jpg';
+import axios from 'axios';
 
-function DriverForm() {
+function DriverForm({ formRef }) {
     const [formData, setFormData] = useState({
         name: "",
         phoneNumber: "",
@@ -22,14 +23,31 @@ function DriverForm() {
         setFormData({ ...formData, [e.target.name]: e.target.files[0] });
     };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        console.log(formData);
-        // Submit form logic here
+    const handleSubmit = async (e) => {
+        e.preventDefault(); // Prevent the default form submission behavior
+
+        const data = new FormData();
+        
+        // Append form fields to FormData
+        for (const key in formData) {
+            data.append(key, formData[key]);
+        }
+
+        try {
+            const response = await axios.post('http://localhost:8000/driverreg', data, {
+                headers: {
+                    'Content-Type': 'multipart/form-data', // Set content type for file uploads
+                },
+            });
+            alert(response.data.message); // Show success message
+        } catch (error) {
+            console.error('Error submitting form:', error);
+            alert('Error submitting form. Please try again.'); // Show error message
+        }
     };
 
     return (
-        <div className="container" style={styles.container}>
+        <div className="container" ref={formRef} style={styles.container}>
             <form style={styles.form} onSubmit={handleSubmit}>
                 <div style={styles.profilePhoto}>
                     <img
@@ -37,7 +55,6 @@ function DriverForm() {
                         alt="profile"
                         style={styles.image}
                     />
-                    {/* <p>Your Photo</p> */}
                 </div>
 
                 <div style={styles.row}>
@@ -49,6 +66,7 @@ function DriverForm() {
                             value={formData.name}
                             onChange={handleInputChange}
                             style={styles.input}
+                            required
                         />
                     </div>
 
@@ -60,6 +78,7 @@ function DriverForm() {
                             value={formData.phoneNumber}
                             onChange={handleInputChange}
                             style={styles.input}
+                            required
                         />
                     </div>
                 </div>
@@ -73,6 +92,7 @@ function DriverForm() {
                             value={formData.email}
                             onChange={handleInputChange}
                             style={styles.input}
+                            required
                         />
                     </div>
 
@@ -84,6 +104,7 @@ function DriverForm() {
                             value={formData.city}
                             onChange={handleInputChange}
                             style={styles.input}
+                            required
                         />
                     </div>
                 </div>
@@ -97,8 +118,8 @@ function DriverForm() {
                             value={formData.drivingLicenceNumber}
                             onChange={handleInputChange}
                             style={styles.input}
+                            required
                         />
-                        {/* <button style={styles.verifyButton}>Verify</button> */}
                     </div>
 
                     <div style={styles.inputContainer}>
@@ -108,6 +129,7 @@ function DriverForm() {
                             name="drivingLicenceImage"
                             onChange={handleFileChange}
                             style={styles.inputFile}
+                            required
                         />
                     </div>
                 </div>
@@ -162,7 +184,6 @@ const styles = {
         padding: "20px",
         fontFamily: "'Arial', sans-serif",
         width: "100%", // Make container full width
-        // maxWidth: "1200px", // Increase max-width
     },
     form: {
         backgroundColor: "#f9f9f9",
@@ -216,14 +237,6 @@ const styles = {
         borderRadius: "5px",
         cursor: "pointer",
         width: "200px", // Increase button width
-    },
-    "@media (max-width: 768px)": {
-        row: {
-            flexDirection: "column", // Stack elements vertically on smaller screens
-        },
-        inputContainer: {
-            flex: "1 1 100%", // Full width on smaller screens
-        },
     },
 };
 
