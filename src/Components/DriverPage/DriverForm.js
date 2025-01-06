@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import Profile from '../Images/driver.jpg';
 import axios from 'axios';
-
 function DriverForm({ formRef }) {
     const [formData, setFormData] = useState({
         name: "",
@@ -14,38 +13,30 @@ function DriverForm({ formRef }) {
         aadharFront: null,
         aadharBack: null,
     });
-
     const handleInputChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
-
     const handleFileChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.files[0] });
     };
-
     const handleSubmit = async (e) => {
-        e.preventDefault(); // Prevent the default form submission behavior
-
+        e.preventDefault(); 
         const data = new FormData();
-        
-        // Append form fields to FormData
         for (const key in formData) {
             data.append(key, formData[key]);
         }
-
         try {
             const response = await axios.post('http://localhost:8000/driverreg', data, {
                 headers: {
-                    'Content-Type': 'multipart/form-data', // Set content type for file uploads
+                    'Content-Type': 'multipart/form-data',
                 },
             });
-            alert(response.data.message); // Show success message
+            alert(response.data.message); 
         } catch (error) {
             console.error('Error submitting form:', error);
-            alert('Error submitting form. Please try again.'); // Show error message
+            alert('Error submitting form. Please try again.'); 
         }
     };
-
     return (
         <div className="container" ref={formRef} style={styles.container}>
             <form style={styles.form} onSubmit={handleSubmit}>
@@ -56,7 +47,6 @@ function DriverForm({ formRef }) {
                         style={styles.image}
                     />
                 </div>
-
                 <div style={styles.row}>
                     <div style={styles.inputContainer}>
                         <label>Name</label>
@@ -69,7 +59,6 @@ function DriverForm({ formRef }) {
                             required
                         />
                     </div>
-
                     <div style={styles.inputContainer}>
                         <label>Phone Number</label>
                         <input
@@ -82,7 +71,6 @@ function DriverForm({ formRef }) {
                         />
                     </div>
                 </div>
-
                 <div style={styles.row}>
                     <div style={styles.inputContainer}>
                         <label>Email id</label>
@@ -95,7 +83,6 @@ function DriverForm({ formRef }) {
                             required
                         />
                     </div>
-
                     <div style={styles.inputContainer}>
                         <label>City</label>
                         <input
@@ -108,7 +95,6 @@ function DriverForm({ formRef }) {
                         />
                     </div>
                 </div>
-
                 <div style={styles.row}>
                     <div style={styles.inputContainer}>
                         <label>Driving Licence number</label>
@@ -121,7 +107,6 @@ function DriverForm({ formRef }) {
                             required
                         />
                     </div>
-
                     <div style={styles.inputContainer}>
                         <label>Driving Licence image</label>
                         <input
@@ -133,7 +118,6 @@ function DriverForm({ formRef }) {
                         />
                     </div>
                 </div>
-
                 <div style={styles.row}>
                     <div style={styles.inputContainer}>
                         <label>Pan Card image</label>
@@ -144,7 +128,6 @@ function DriverForm({ formRef }) {
                             style={styles.inputFile}
                         />
                     </div>
-
                     <div style={styles.inputContainer}>
                         <label>Aadhar Front</label>
                         <input
@@ -155,7 +138,6 @@ function DriverForm({ formRef }) {
                         />
                     </div>
                 </div>
-
                 <div style={styles.row}>
                     <div style={styles.inputContainer}>
                         <label>Aadhar Back</label>
@@ -167,7 +149,6 @@ function DriverForm({ formRef }) {
                         />
                     </div>
                 </div>
-
                 <div style={styles.submitContainer}>
                     <button type="submit" style={styles.submitButton}>
                         SUBMIT
@@ -177,13 +158,12 @@ function DriverForm({ formRef }) {
         </div>
     );
 }
-
 const styles = {
     container: {
         margin: "0 auto",
         padding: "20px",
         fontFamily: "'Arial', sans-serif",
-        width: "100%", // Make container full width
+        width: "100%", 
     },
     form: {
         backgroundColor: "#f9f9f9",

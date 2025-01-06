@@ -24,8 +24,6 @@ function FindRide() {
   const handleBookNow = (ride) => {
     // Handle the booking logic here
     console.log("Booking ride:", ride);
-    // alert(`Booking for ${ride.pickupLocation} to ${ride.dropoffLocation} is confirmed!`);
-    // navigate(-1)
     navigate('/ridedetails', { state: { ride } });
   };
 

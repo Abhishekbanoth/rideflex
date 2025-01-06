@@ -12,8 +12,8 @@ const generateOTP = () => Math.floor(100000 + Math.random() * 900000);
 // POST route to generate OTP
 router.post('/otp', async (req, res) => {
     try {
-        const { phoneNumber } = req.body; // Get the phone number from the request
-        const otp = generateOTP(); // Generate OTP
+        const { phoneNumber } = req.body; 
+        const otp = generateOTP(); 
         const otpExpiry = new Date(Date.now() + 10 * 60 * 1000); // OTP expires in 10 minutes
 
         // Find or create a booking for this phone number
@@ -22,9 +22,9 @@ router.post('/otp', async (req, res) => {
         if (!booking) {
             // Create a new booking if one does not exist
             booking = new Booking({
-                phoneNumber,   // Store the phone number
-                otp,           // Store the OTP
-                otpExpiry,     // Store the OTP expiry
+                phoneNumber,  
+                otp,           
+                otpExpiry,    
             });
         } else {
             // Update the existing booking with the new OTP and expiry

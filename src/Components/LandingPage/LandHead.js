@@ -1,6 +1,5 @@
 import React from "react";
 import img from '../Images/LandHead.jpg'
-
 const App = () => {
     const styles = {
         container: {
@@ -42,7 +41,6 @@ const App = () => {
             backgroundColor: "#ccc",
         },
     };
-
     return (
         <div style={styles.container}>
             <div style={styles.content}>
@@ -61,5 +59,4 @@ const App = () => {
         </div>
     );
 };
-
 export default App;
