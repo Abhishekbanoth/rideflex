@@ -23,7 +23,7 @@ function Footer() {
                                         </a>
                                     </div>
                                     <div className="logo" style={{ flex: 1, textAlign: 'center' }}>
-                                        <a href="https://instagram.com/your-profile" target="_blank" rel="noopener noreferrer">
+                                        <a href="https://www.instagram.com/rideflex.in/" target="_blank" rel="noopener noreferrer">
                                             <img src={instagram} alt="instagram" style={{ width: "50px", height: "50px", objectFit: "contain" }} />
                                         </a>
                                     </div>

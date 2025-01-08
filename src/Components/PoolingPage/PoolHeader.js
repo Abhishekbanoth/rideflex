@@ -2,124 +2,103 @@ import React from "react";
 import img from '../Images/PoolingBack.jpeg';
 
 const PoolHead = () => {
-    const styles = {
-        container: {
-            position: "relative",
-            textAlign: "left",
-            color: "white",
-            height: "100vh",
-            backgroundImage: `url(${img})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            display: "flex",
-            justifyContent: "flex-start",
-            alignItems: "center",
-            padding: "0 20px", // Padding for smaller screens
-        },
-        content: {
-            marginLeft: "50px",
-            marginBottom: "50px",
-        },
-        title: {
-            fontSize: "48px", // Large screen size
-            fontWeight: "bold",
-            marginBottom: "10px",
-        },
-        subtitle: {
-            fontSize: "20px", // Large screen size
-            marginBottom: "50px",
-        },
-        buttonContainer: {
-            display: "flex",
-            flexDirection: "row",
-            gap: "15px", // Space between buttons
-        },
-        button: {
-            padding: "15px 30px", // Large screen size
-            fontSize: "15px",
-            fontWeight: "bold",
-            color: "#000",
-            backgroundColor: "white",
-            border: "none",
-            borderRadius: "5px",
-            cursor: "pointer",
-            textDecoration: 'none',
-            marginTop: "20px",
-            transition: "background-color 0.3s ease",
-        },
-        buttonHover: {
-            backgroundColor: "#ccc",
-        },
-        // Media Queries for responsiveness
-        '@media (max-width: 768px)': {
-            container: {
-                flexDirection: "column",
-                justifyContent: "center",
-                alignItems: "center",
-                padding: "10px", // Reduce padding for tablet screens
-            },
-            content: {
-                marginLeft: "0px",
-                textAlign: "center",
-            },
-            title: {
-                fontSize: "28px", // Further reduce title size
-            },
-            subtitle: {
-                fontSize: "14px", // Further reduce subtitle size
-            },
-            buttonContainer: {
-                justifyContent: "center",
-            },
-            button: {
-                padding: "10px 20px", // Smaller padding for buttons
-                fontSize: "14px", // Smaller button font size
-            },
-        },
-        '@media (max-width: 480px)': {
-            container: {
-                padding: "5px", // Further reduce padding for small screens
-                marginLeft:"5px"
-            },
-            title: {
-                fontSize: "22px", // Reduce title size for mobile
-            },
-            subtitle: {
-                fontSize: "12px", // Reduce subtitle size for mobile
-            },
-            button: {
-                padding: "8px 15px", // Further reduce button padding
-                fontSize: "12px", // Smaller button font size for mobile
-            },
-        },
-    };
-
     return (
-        <div style={styles.container}>
-            <div style={styles.content}>
-                <h1 style={styles.title}>Join the Ride Sharing Revolution</h1>
-                <p style={styles.subtitle}>
+        <div
+            style={{
+                position: "relative",
+                textAlign: "left",
+                color: "white",
+                height: "100vh",
+                backgroundImage: `url(${img})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                display: "flex",
+                justifyContent: "flex-start",
+                alignItems: "center",
+                padding: "0 20px",
+            }}
+        >
+            <style>
+                {`
+                    .poolhead-content {
+                        margin-left: 50px;
+                        margin-bottom: 50px;
+                    }
+                    .poolhead-title {
+                        font-size: 48px;
+                        font-weight: bold;
+                        margin-bottom: 10px;
+                    }
+                    .poolhead-subtitle {
+                        font-size: 20px;
+                        margin-bottom: 50px;
+                    }
+                    .poolhead-button-container {
+                        display: flex;
+                        flex-direction: row;
+                        gap: 15px;
+                    }
+                    .poolhead-button {
+                        padding: 15px 30px;
+                        font-size: 15px;
+                        font-weight: bold;
+                        color: #000;
+                        background-color: white;
+                        border: none;
+                        border-radius: 5px;
+                        cursor: pointer;
+                        text-decoration: none;
+                        margin-top: 20px;
+                        transition: background-color 0.3s ease;
+                    }
+                    .poolhead-button:hover {
+                        background-color: #ccc;
+                    }
+                    /* Responsive Styles */
+                    @media (max-width: 768px) {
+                        .poolhead-content {
+                            margin-left: 0;
+                            text-align: center;
+                        }
+                        .poolhead-title {
+                            font-size: 28px;
+                        }
+                        .poolhead-subtitle {
+                            font-size: 14px;
+                        }
+                        .poolhead-button-container {
+                            justify-content: center;
+                        }
+                        .poolhead-button {
+                            padding: 10px 20px;
+                            font-size: 14px;
+                        }
+                    }
+                    @media (max-width: 480px) {
+                        .poolhead-container {
+                            padding: 5px;
+                        }
+                        .poolhead-title {
+                            font-size: 22px;
+                        }
+                        .poolhead-subtitle {
+                            font-size: 12px;
+                        }
+                        .poolhead-button {
+                            padding: 8px 15px;
+                            font-size: 12px;
+                        }
+                    }
+                `}
+            </style>
+            <div className="poolhead-content">
+                <h1 className="poolhead-title">Join the Ride Sharing Revolution</h1>
+                <p className="poolhead-subtitle">
                     Connect with others and share rides for a more convenient and cost-effective travel experience.
                 </p>
-                <div style={styles.buttonContainer}>
-                    <a href="/find"
-                        style={styles.button}
-                        onMouseEnter={(e) =>
-                            (e.currentTarget.style.backgroundColor = styles.buttonHover.backgroundColor)
-                        }
-                        onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "white")}
-                    >
-                        Find a Ride
-                    </a>
-                    <a href="/offer"
-                        style={styles.button}
-                        onMouseEnter={(e) =>
-                            (e.currentTarget.style.backgroundColor = styles.buttonHover.backgroundColor)
-                        }
-                        onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "white")}
-                    >
-                        Offer a Ride
-                    </a>
+                <div className="poolhead-button-container">
+                    <a href="/find" className="poolhead-button">Find a Ride</a>
+                    <a href="/offer" className="poolhead-button">Offer a Ride</a>
                 </div>
             </div>
         </div>
@@ -127,6 +106,7 @@ const PoolHead = () => {
 };
 
 export default PoolHead;
+
 
 
 

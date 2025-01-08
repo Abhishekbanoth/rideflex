@@ -144,7 +144,7 @@ const HowRide = () => {
             <div className="timeline-container">
                 <div className="timeline-item" data-aos="zoom-in">
                     <div className="step-box">
-                        <h4>01</h4>
+                        <h4>01 </h4>
                         <span>Step</span>
                     </div>
                     <div className="description-box">
@@ -154,7 +154,7 @@ const HowRide = () => {
 
                 <div className="timeline-item" data-aos="zoom-in">
                     <div className="step-box">
-                        <h4>02</h4>
+                        <h4>02 </h4>
                         <span>Step</span>
                     </div>
                     <div className="description-box">
@@ -164,17 +164,17 @@ const HowRide = () => {
 
                 <div className="timeline-item" data-aos="zoom-in">
                     <div className="step-box">
-                        <h4>03</h4>
+                        <h4>03 </h4>
                         <span>Step</span>
                     </div>
                     <div className="description-box">
-                        <p className="step-text"><b>Book:</b> Select a driver and confirm your booking.</p>
+                        <p className="step-text"><b>Book:</b> Book your drivers for ur ride.</p>
                     </div>
                 </div>
 
                 <div className="timeline-item" data-aos="zoom-in">
                     <div className="step-box">
-                        <h4>04</h4>
+                        <h4>04 </h4>
                         <span>Step</span>
                     </div>
                     <div className="description-box">
