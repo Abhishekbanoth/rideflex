@@ -31,18 +31,16 @@ const RideDetails = () => {
         return <div>No ride details available.</div>;
     }
 
-    const handleclick = async() => {
+    const handleclick = async () => {
         try {
-            // Make the API call to book the ride and delete it from available rides
             const response = await fetch(`http://localhost:8000/findride/book/${ride._id}`, {
-                method: 'DELETE',
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
             });
     
             if (response.ok) {
                 setAlertMessage('Ride booked successfully');
-                // Optionally, remove the ride from the available rides list on the frontend
-                // This can be done by filtering the rides state or updating the UI accordingly
-                // Optionally, trigger a refresh of the available rides list
+                setTimeout(() => navigate(-1), 2000); // Navigate back after 2 seconds
             } else {
                 setAlertMessage('Failed to book the ride');
             }
@@ -50,6 +48,7 @@ const RideDetails = () => {
             setAlertMessage('Error booking the ride');
         }
     };
+    
 
     const handleAlertClose = () => {
         setAlertMessage(null); // Close the alert

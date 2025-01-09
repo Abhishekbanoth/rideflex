@@ -150,12 +150,12 @@ function Offer() {
 
                 <div className="row">
                     <div className="col-md-6 mb-3">
-                        <label htmlFor="pickup" className="fw-bold">Pick Up Location</label>
+                        <label htmlFor="pickup" className="fw-bold">Starting Location</label>
                         <input type="text" className="form-control" style={styles.input} placeholder="Location"
                             value={pickupLocation} onChange={(e) => setPickupLocation(e.target.value)} />
                     </div>
                     <div className="col-md-6 mb-3">
-                        <label htmlFor="dropoff" className="fw-bold">Drop Off Location</label>
+                        <label htmlFor="dropoff" className="fw-bold">Ending Location</label>
                         <input type="text" className="form-control" style={styles.input} placeholder="Location"
                             value={dropoffLocation} onChange={(e) => setDropoffLocation(e.target.value)} />
                     </div>

@@ -15,22 +15,27 @@ router.get('/', async (req, res) => {
     }
 });
 
-router.delete('/book/:id', async (req, res) => {
-    const { id } = req.params; // The ride ID to be deleted
+router.put('/book/:id', async (req, res) => {
+    const { id } = req.params;
 
     try {
-        // Find the ride and remove it from the database
-        const ride = await OfferRide.findByIdAndDelete(id);
+        // Find the ride and update its status
+        const ride = await OfferRide.findByIdAndUpdate(
+            id,
+            { status: 'booked' }, // Add a status field
+            { new: true } // Return the updated ride
+        );
 
         if (!ride) {
             return res.status(404).json({ message: 'Ride not found' });
         }
 
-        res.status(200).json({ message: 'Ride booked successfully and removed from available rides' });
+        res.status(200).json({ message: 'Ride booked successfully', ride });
     } catch (error) {
-        res.status(500).json({ message: 'Error deleting ride', error: error.message });
+        res.status(500).json({ message: 'Error booking ride', error: error.message });
     }
 });
+
 
 
 

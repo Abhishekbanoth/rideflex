@@ -42,6 +42,7 @@ const offerRideSchema = new mongoose.Schema({
         ref: 'User',
         required: false, // Set this to false
     },
+    status: { type: String, default: 'available' } 
 }, { timestamps: true });
 
 const OfferRide = mongoose.model('OfferRide', offerRideSchema);

@@ -18,17 +18,19 @@ function FindRide() {
 
   useEffect(() => {
     const fetchRideOffers = async () => {
-      try {
-        const response = await axios.get("http://localhost:8000/findride");
-        setRideOffers(response.data);
-        setFilteredRides(response.data);
-      } catch (error) {
-        console.error("Error fetching rides:", error);
-      }
+        try {
+            const response = await axios.get("http://localhost:8000/findride");
+            const availableRides = response.data.filter(ride => ride.status === 'available');
+            setRideOffers(availableRides);
+            setFilteredRides(availableRides);
+        } catch (error) {
+            console.error("Error fetching rides:", error);
+        }
     };
 
     fetchRideOffers();
-  }, []);
+}, []);
+
 
   // Configure Fuse.js for fuzzy matching
   const fuseOptions = {
@@ -96,20 +98,27 @@ function FindRide() {
     setSuggestions((prev) => ({ ...prev, [field]: [] }));
   };
 
-  const handleBookNow = (ride) => {
-    alert(`Booking ride from ${ride.pickupLocation} to ${ride.dropoffLocation}`);
-    
-    // Remove the booked ride from the available rides list
-    const updatedRides = filteredRides.filter((r) => r.id !== ride.id);  // Assuming each ride has a unique 'id'
-    setFilteredRides(updatedRides);  // Update filtered rides state
-  
-    // Optionally, remove the ride from all available offers as well
-    const updatedRideOffers = rideOffers.filter((r) => r.id !== ride.id);
-    setRideOffers(updatedRideOffers);  // Update the full list of ride offers
-  
-    // Navigate to the ride details page
-    navigate("/ridedetails", { state: { ride } });
-  };
+  const handleBookNow = async (ride) => {
+    try {
+        await axios.put(`http://localhost:8000/findride/book/${ride._id}`);
+        alert(`Ride from ${ride.pickupLocation} to ${ride.dropoffLocation} has been booked!`);
+
+        // Remove the ride from the available rides list on the frontend
+        const updatedRides = filteredRides.filter((r) => r._id !== ride._id);
+        setFilteredRides(updatedRides);
+
+        // Optionally, update the ride offers state
+        const updatedRideOffers = rideOffers.filter((r) => r._id !== ride._id);
+        setRideOffers(updatedRideOffers);
+
+        // Navigate to ride details page
+        navigate("/ridedetails", { state: { ride } });
+    } catch (error) {
+        console.error("Error booking ride:", error);
+        alert("Failed to book the ride. Please try again.");
+    }
+};
+
   
 
   const toggleShowAllRides = () => {
