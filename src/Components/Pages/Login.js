@@ -2,6 +2,193 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import CustomAlert from '../CustomAlert'; // Import your custom alert
+
+const Login = () => {
+    const [isSignUp, setIsSignUp] = useState(false);
+    const [windowWidth, setWindowWidth] = React.useState(window.innerWidth);
+    const [formData, setFormData] = useState({
+        name: '',
+        email: '',
+        phno: '',
+        password: '',
+        confirmpassword: ''
+    });
+    const [alertMessage, setAlertMessage] = useState(null); // To store alert message
+    const navigate = useNavigate();
+
+    React.useEffect(() => {
+        const handleResize = () => setWindowWidth(window.innerWidth);
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
+    const toggleForm = () => {
+        setIsSignUp(!isSignUp);
+    };
+
+    const handleChange = (e) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await axios.post('http://localhost:8000/register', formData, {
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
+            setAlertMessage('User registered successfully!'); // Display success alert
+            localStorage.setItem('username', response.data.name);
+            console.log(response);
+        } catch (error) {
+            setAlertMessage('Enter Valid Details'); // Display error alert
+            console.error('Error:', error.response ? error.response.data : error.message);
+        }
+    };
+
+    const handleLogin = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await axios.post('http://localhost:8000/login', {
+                email: formData.email,
+                password: formData.password
+            });
+    
+            const { token, userId } = response.data;
+            localStorage.setItem('token', token); // Save the token
+            localStorage.setItem('userId', userId); // Save the userId
+
+            setAlertMessage('Login successful!');
+            // localStorage.setItem('token', response.data.token); // Save token
+            window.dispatchEvent(new Event('storage')); // Trigger storage event
+            navigate('/home');
+        } catch (error) {
+            setAlertMessage('Invalid Credentials');
+            console.error('Error:', error.response ? error.response.data : error.message);
+        }
+    };
+    
+    
+
+    return (
+        <div className='my-5' style={styles.body}>
+            <div style={styles.container(windowWidth, window.innerHeight)}>
+                <div style={styles.leftSection(windowWidth)}>
+                    <div style={styles.formBox}>
+                        <h2 style={styles.formBoxH2}>{isSignUp ? 'SIGNUP FORM' : 'LOGIN FORM'}</h2>
+                        <div style={styles.toggleButtons}>
+                            <button
+                                style={{ ...styles.toggleButton, ...(isSignUp ? {} : styles.toggleButtonActive) }}
+                                onClick={() => setIsSignUp(false)}
+                            >
+                                Login
+                            </button>
+                            <button
+                                style={{ ...styles.toggleButton, ...(isSignUp ? styles.toggleButtonActive : {}) }}
+                                onClick={() => setIsSignUp(true)}
+                            >
+                                Signup
+                            </button>
+                            <div
+                                style={{
+                                    ...styles.toggleIndicator,
+                                    ...(isSignUp ? styles.toggleIndicatorRight : styles.toggleIndicatorLeft),
+                                }}
+                            ></div>
+                        </div>
+                        <form style={styles.formBoxForm} onSubmit={isSignUp ? handleSubmit : handleLogin}>
+                            {isSignUp && (
+                                <input
+                                    type="text"
+                                    name="name"
+                                    placeholder="Username"
+                                    value={formData.name}
+                                    onChange={handleChange}
+                                    required
+                                    style={styles.formBoxInput}
+                                />
+                            )}
+                            <input
+                                type="email"
+                                name="email"
+                                placeholder="Email Address"
+                                value={formData.email}
+                                onChange={handleChange}
+                                required
+                                style={styles.formBoxInput}
+                            />
+                            {isSignUp && (
+                                <input
+                                    type="tel"
+                                    name="phno"
+                                    placeholder="Phone Number"
+                                    value={formData.phno}
+                                    onChange={handleChange}
+                                    required
+                                    style={styles.formBoxInput}
+                                />
+                            )}
+                            <input
+                                type="password"
+                                name="password"
+                                placeholder="Password"
+                                value={formData.password}
+                                onChange={handleChange}
+                                required
+                                style={styles.formBoxInput}
+                            />
+                            {isSignUp && (
+                                <input
+                                    type="password"
+                                    name="confirmpassword"
+                                    placeholder="Confirm Password"
+                                    value={formData.confirmpassword}
+                                    onChange={handleChange}
+                                    required
+                                    style={styles.formBoxInput}
+                                />
+                            )}
+                            {!isSignUp && <a href="/" style={styles.forgotPassword}>Forgot password?</a>}
+                            <button
+                                type="submit"
+                                style={styles.formBoxButton}
+                                onMouseOver={(e) => e.currentTarget.style.backgroundColor = styles.formBoxButtonHover.backgroundColor}
+                                onMouseOut={(e) => e.currentTarget.style.backgroundColor = styles.formBoxButton.backgroundColor}
+                            >
+                                {isSignUp ? 'Sign Up' : 'Login'}
+                            </button>
+                        </form>
+                        <p style={styles.formFooter}>
+                            {isSignUp ? "Already have an account?" : "Not a member?"}
+                            <span style={styles.formFooterSpan} onClick={toggleForm}>
+                                {isSignUp ? " Login now" : " Signup now"}
+                            </span>
+                        </p>
+                    </div>
+                </div>
+                <div style={styles.rightSection(windowWidth)}>
+                    <h1 style={styles.rightSectionH1}>Elevate Your Journey with RideFlex!</h1>
+                    <p style={styles.rightSectionP}>New Here?</p>
+                    <button
+                        style={styles.rightSectionButton}
+                        onMouseOver={(e) => e.currentTarget.style.backgroundColor = styles.rightSectionButtonHover.backgroundColor}
+                        onMouseOut={(e) => e.currentTarget.style.backgroundColor = styles.rightSectionButton.backgroundColor}
+                        onClick={toggleForm}
+                    >
+                        {isSignUp ? 'Login' : 'Signup'}
+                    </button>
+                </div>
+            </div>
+
+            {/* Custom Alert */}
+            {alertMessage && <CustomAlert message={alertMessage} onClose={() => setAlertMessage(null)} />}
+        </div>
+    );
+};
+
+export default Login;
+
 const styles = {
     body: {
         margin: 0,
@@ -152,185 +339,3 @@ const styles = {
 };
 
 
-
-const Login = () => {
-    const [isSignUp, setIsSignUp] = useState(false);
-    const [windowWidth, setWindowWidth] = React.useState(window.innerWidth);
-    const [formData, setFormData] = useState({
-        name: '',
-        email: '',
-        phno: '',
-        password: '',
-        confirmpassword: ''
-    });
-    const [alertMessage, setAlertMessage] = useState(null); // To store alert message
-    const navigate = useNavigate();
-
-    React.useEffect(() => {
-        const handleResize = () => setWindowWidth(window.innerWidth);
-        window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
-    }, []);
-
-    const toggleForm = () => {
-        setIsSignUp(!isSignUp);
-    };
-
-    const handleChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
-    };
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        try {
-            const response = await axios.post('http://localhost:8000/register', formData, {
-                headers: {
-                    'Content-Type': 'application/json',
-                }
-            });
-            setAlertMessage('User registered successfully!'); // Display success alert
-            localStorage.setItem('username', response.data.name);
-            console.log(response);
-        } catch (error) {
-            setAlertMessage('Enter Valid Details'); // Display error alert
-            console.error('Error:', error.response ? error.response.data : error.message);
-        }
-    };
-
-    const handleLogin = async (e) => {
-        e.preventDefault();
-        try {
-            const response = await axios.post('http://localhost:8000/login', {
-                email: formData.email,
-                password: formData.password
-            }, {
-                headers: {
-                    'Content-Type': 'application/json',
-                }
-            });
-            setAlertMessage('Login successful!'); // Display success alert
-            console.log(response);
-            navigate('/home');
-        } catch (error) {
-            setAlertMessage('Invalid Credentials'); // Display error alert
-            console.error('Error:', error.response ? error.response.data : error.message);
-        }
-    };
-
-    return (
-        <div className='my-5' style={styles.body}>
-            <div style={styles.container(windowWidth, window.innerHeight)}>
-                <div style={styles.leftSection(windowWidth)}>
-                    <div style={styles.formBox}>
-                        <h2 style={styles.formBoxH2}>{isSignUp ? 'SIGNUP FORM' : 'LOGIN FORM'}</h2>
-                        <div style={styles.toggleButtons}>
-                            <button
-                                style={{ ...styles.toggleButton, ...(isSignUp ? {} : styles.toggleButtonActive) }}
-                                onClick={() => setIsSignUp(false)}
-                            >
-                                Login
-                            </button>
-                            <button
-                                style={{ ...styles.toggleButton, ...(isSignUp ? styles.toggleButtonActive : {}) }}
-                                onClick={() => setIsSignUp(true)}
-                            >
-                                Signup
-                            </button>
-                            <div
-                                style={{
-                                    ...styles.toggleIndicator,
-                                    ...(isSignUp ? styles.toggleIndicatorRight : styles.toggleIndicatorLeft),
-                                }}
-                            ></div>
-                        </div>
-                        <form style={styles.formBoxForm} onSubmit={isSignUp ? handleSubmit : handleLogin}>
-                            {isSignUp && (
-                                <input
-                                    type="text"
-                                    name="name"
-                                    placeholder="Username"
-                                    value={formData.name}
-                                    onChange={handleChange}
-                                    required
-                                    style={styles.formBoxInput}
-                                />
-                            )}
-                            <input
-                                type="email"
-                                name="email"
-                                placeholder="Email Address"
-                                value={formData.email}
-                                onChange={handleChange}
-                                required
-                                style={styles.formBoxInput}
-                            />
-                            {isSignUp && (
-                                <input
-                                    type="tel"
-                                    name="phno"
-                                    placeholder="Phone Number"
-                                    value={formData.phno}
-                                    onChange={handleChange}
-                                    required
-                                    style={styles.formBoxInput}
-                                />
-                            )}
-                            <input
-                                type="password"
-                                name="password"
-                                placeholder="Password"
-                                value={formData.password}
-                                onChange={handleChange}
-                                required
-                                style={styles.formBoxInput}
-                            />
-                            {isSignUp && (
-                                <input
-                                    type="password"
-                                    name="confirmpassword"
-                                    placeholder="Confirm Password"
-                                    value={formData.confirmpassword}
-                                    onChange={handleChange}
-                                    required
-                                    style={styles.formBoxInput}
-                                />
-                            )}
-                            {!isSignUp && <a href="/" style={styles.forgotPassword}>Forgot password?</a>}
-                            <button
-                                type="submit"
-                                style={styles.formBoxButton}
-                                onMouseOver={(e) => e.currentTarget.style.backgroundColor = styles.formBoxButtonHover.backgroundColor}
-                                onMouseOut={(e) => e.currentTarget.style.backgroundColor = styles.formBoxButton.backgroundColor}
-                            >
-                                {isSignUp ? 'Sign Up' : 'Login'}
-                            </button>
-                        </form>
-                        <p style={styles.formFooter}>
-                            {isSignUp ? "Already have an account?" : "Not a member?"}
-                            <span style={styles.formFooterSpan} onClick={toggleForm}>
-                                {isSignUp ? " Login now" : " Signup now"}
-                            </span>
-                        </p>
-                    </div>
-                </div>
-                <div style={styles.rightSection(windowWidth)}>
-                    <h1 style={styles.rightSectionH1}>Elevate Your Journey with RideFlex!</h1>
-                    <p style={styles.rightSectionP}>New Here?</p>
-                    <button
-                        style={styles.rightSectionButton}
-                        onMouseOver={(e) => e.currentTarget.style.backgroundColor = styles.rightSectionButtonHover.backgroundColor}
-                        onMouseOut={(e) => e.currentTarget.style.backgroundColor = styles.rightSectionButton.backgroundColor}
-                        onClick={toggleForm}
-                    >
-                        {isSignUp ? 'Login' : 'Signup'}
-                    </button>
-                </div>
-            </div>
-
-            {/* Custom Alert */}
-            {alertMessage && <CustomAlert message={alertMessage} onClose={() => setAlertMessage(null)} />}
-        </div>
-    );
-};
-
-export default Login;

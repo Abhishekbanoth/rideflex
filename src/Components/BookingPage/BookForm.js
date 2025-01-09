@@ -54,33 +54,28 @@ function BookForm() {
     };
     const handleSubmit = async (e) => {
         e.preventDefault();
+        const userId = localStorage.getItem('userId'); // Get the logged-in user's ID
+
         if (!formData.name || !formData.phoneNumber || !formData.time || !formData.vehicle ||
             !formData.sourceLocation || !formData.destinationLocation || !formData.date || !formData.typeOfServices) {
                 setAlertMessage('Please fill all required fields');
             return; // Prevent form submission if validation fails
         }
-        console.log(formData);
+        // console.log(formData);
         try {
             const response = await fetch('http://localhost:8000/Bookings/booking', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(formData),
+                body: JSON.stringify({ userId, ...formData }),
             });
             const data = await response.json();
             
             if (response.ok) {
-                console.log(data)
-                // alert('Booking successful!');
+                setAlertMessage('Booking successful!');                // alert('Booking successful!');
                 if (offcanvasRef.current) {
                     const offcanvasInstance = new bootstrap.Offcanvas(offcanvasRef.current);
                     offcanvasInstance.show();
                 }
-                // setOtp(data.otp); // Store the OTP in state
-                // alert('Booking successful! OTP is generated.');
-                // Redirect to Google Maps with destination
-                // const destination = formData.location;
-                // const url = `https://www.google.com/maps/dir/?api=1&origin=My+Location&destination=${encodeURIComponent(destination)};
-                // window.open(url, '_blank')`; // Open Google Maps in a new tab
             } else {
                 setAlertMessage(`Error: ${data.message}`);
             }
@@ -99,7 +94,6 @@ function BookForm() {
             const data = await response.json();
             if (response.ok) {
                 setOtp(data.otp); // Store the OTP in state
-                // alert('OTP generated successfully!');
                 setAlertMessage('OTP generated successfully!'); // Display success alert
 
                 if (offcanvasRef.current) {

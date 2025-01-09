@@ -40,7 +40,7 @@ const RideDetails = () => {
     
             if (response.ok) {
                 setAlertMessage('Ride booked successfully');
-                setTimeout(() => navigate(-1), 2000); // Navigate back after 2 seconds
+                // setTimeout(() => navigate(-1), 2000); // Navigate back after 2 seconds
             } else {
                 setAlertMessage('Failed to book the ride');
             }
@@ -52,6 +52,7 @@ const RideDetails = () => {
 
     const handleAlertClose = () => {
         setAlertMessage(null); // Close the alert
+        navigate(-1); 
         // Open Google Maps after closing the alert
         const origin = ride.pickupLocation;
         const destination = ride.dropoffLocation;

@@ -9,6 +9,9 @@ import offerrideRoute from './Routes/offer.route.js';
 import findrideRoute from './Routes/findride.route.js'
 import DriverRegRoute from './Routes/DriverRegRoute.js'
 import bookingRoutes from './Routes/BookingRoute.js'
+import profileRoutes from './Routes/BackProfile.js';
+
+
 
 const app = express();
 
@@ -35,6 +38,7 @@ app.use('/offerride', offerrideRoute);
 app.use('/findride', findrideRoute);
 app.use('/driverreg',DriverRegRoute);
 app.use('/Bookings', bookingRoutes);
+app.use('/profile', profileRoutes);
 
 
 app.listen(8000, () => {

@@ -87,10 +87,14 @@ router.post('/verify-otp', async (req, res) => {
 // POST route to create a booking
 router.post('/booking', async (req, res) => {
     try {
-        const { ...bookingDetails } = req.body;
+        const { userId, ...bookingDetails } = req.body;
+        if (!userId) {
+            return res.status(400).json({ message: 'User ID is required' });
+        }
 
-        // Create a new booking
+        // Create a new booking linked to the user
         const newBooking = new Booking({
+            user: userId, // Set the user field
             ...bookingDetails,
         });
 
@@ -104,5 +108,6 @@ router.post('/booking', async (req, res) => {
         res.status(400).json({ message: err.message });
     }
 });
+
 
 export default router;

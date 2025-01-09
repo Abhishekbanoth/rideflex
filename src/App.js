@@ -14,7 +14,7 @@ import Footer from './Components/HomePage/Footer';
 import Offer from './Components/PoolingServices/Offer';
 import Find from './Components/PoolingServices/Find';
 import RideDetails from './Components/PoolingServices/RideDetails';
-
+import Profile from './Components/Pages/Profile'
 // This component handles conditional rendering of Footer
 function Layout() {
   const location = useLocation();
@@ -32,6 +32,7 @@ function Layout() {
         <Route path="/offer" element={<Offer />} />
         <Route path="/find" element={<Find />} />
         <Route path="/ridedetails" element={<RideDetails />} />
+        <Route path="/profile" element={<Profile />} />
       </Routes>
       {/* Conditionally render the Footer based on the current path */}
       {location.pathname !== '/login' && <Footer />}

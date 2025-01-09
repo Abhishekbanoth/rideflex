@@ -5,6 +5,7 @@ import NProgress from 'nprogress';
 import 'nprogress/nprogress.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import CustomAlert from '../CustomCancelAlert';
+import profile from '../Images/driver1.jpeg'
 
 const NavBar = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(true);
@@ -14,33 +15,37 @@ const NavBar = () => {
     // Check login state on component mount and listen to storage changes
     useEffect(() => {
         const checkLoginStatus = () => {
-            const loginStatus = localStorage.getItem('isLoggedIn');
-            setIsLoggedIn(loginStatus === 'true');
+            const token = localStorage.getItem('token'); // Check for token
+            setIsLoggedIn(!!token); // Set true if token exists
         };
 
         checkLoginStatus();
+
+        // Listen to storage events for login/logout changes
         window.addEventListener('storage', checkLoginStatus);
 
         return () => window.removeEventListener('storage', checkLoginStatus);
     }, []);
 
+
     // NProgress configuration and handler for link clicks
-    const handleLinkClick = (event) => {
-        // if (!isLoggedIn && event.target.getAttribute('href') !== '/login') {
-        //     event.preventDefault(); // Prevent navigation if not logged in and not the login page
-        //     alert('Please log in to access this page!');
-        // } else {
+    const handleLinkClick = (event, path) => {
+        if (!isLoggedIn && path !== '/login') {
+            event.preventDefault(); // Prevent navigation
+            alert('Please log in to access this page!');
+            navigate('/login');
+        } else {
             NProgress.start();
             setTimeout(() => {
                 NProgress.done();
-            }, 500); // Adjust the timeout based on your actual loading time
+            }, 500);// Adjust the timeout based on your actual loading time
 
             // Manually close the navbar after a link is clicked on small screens
             const navbarToggle = document.getElementById('navbarNav');
             if (navbarToggle && navbarToggle.classList.contains('show')) {
                 navbarToggle.classList.remove('show');
             }
-        // }
+        }
     };
 
     // Logout functionality
@@ -65,7 +70,7 @@ const NavBar = () => {
                 {`#nprogress .bar {
                         background: red; /* Change this to your desired color */
                     }
-                `}  
+                `}
             </style>
             <nav className="navbar navbar-expand-lg navbar-dark bg-dark py-4 fixed-top">
                 <div className="container-fluid">
@@ -92,38 +97,38 @@ const NavBar = () => {
                     <div className="collapse navbar-collapse" id="navbarNav">
                         <ul className="navbar-nav mx-auto">
                             <li className="nav-item">
-                                <Link 
-                                    className="nav-link active" 
-                                    aria-current="page" 
-                                    to="/home" 
-                                    onClick={handleLinkClick}
+                                <Link
+                                    className="nav-link active"
+                                    aria-current="page"
+                                    to="/home"
+                                    onClick={(e) => handleLinkClick(e, '/home')}
                                 >
                                     Home
                                 </Link>
                             </li>
                             <li className="nav-item">
-                                <Link 
-                                    className="nav-link" 
-                                    to="/booking" 
-                                    onClick={handleLinkClick}
+                                <Link
+                                    className="nav-link"
+                                    to="/booking"
+                                    onClick={(e) => handleLinkClick(e, '/booking')}
                                 >
                                     Booking
                                 </Link>
                             </li>
                             <li className="nav-item">
-                                <Link 
-                                    className="nav-link" 
-                                    to="/pooling" 
-                                    onClick={handleLinkClick}
+                                <Link
+                                    className="nav-link"
+                                    to="/pooling"
+                                    onClick={(e) => handleLinkClick(e, '/pooling')}
                                 >
                                     Pooling
                                 </Link>
                             </li>
                             <li className="nav-item">
-                                <Link 
-                                    className="nav-link" 
-                                    to="/driver" 
-                                    onClick={handleLinkClick}
+                                <Link
+                                    className="nav-link"
+                                    to="/driver"
+                                    onClick={(e) => handleLinkClick(e, '/driver')}
                                 >
                                     Driver
                                 </Link>
@@ -133,18 +138,28 @@ const NavBar = () => {
                             <li className="nav-item">
                                 {isLoggedIn ? (
                                     <div style={{ display: 'flex', alignItems: 'center' }}>
-                                        <button 
-                                            className="btn btn-link nav-link" 
-                                            style={{ color: 'white', cursor: 'pointer' }} 
+                                        <Link to="/profile" onClick={(e) => handleLinkClick(e, '/profile')}>
+                                            <img
+                                                src={profile} // Replace with profile icon or avatar
+                                                alt="Profile"
+                                                className="rounded-circle me-2"
+                                                style={{ cursor: 'pointer',height:'35px',width:'35px' }}
+                                            />
+                                        </Link>
+
+                                        <button
+                                            className="btn btn-link nav-link"
+                                            style={{ color: 'white', cursor: 'pointer' }}
                                             onClick={handleLogout}
                                         >
                                             Logout
                                         </button>
                                     </div>
                                 ) : (
-                                    <Link 
-                                        className="nav-link" 
+                                    <Link
+                                        className="nav-link"
                                         to="/login"
+                                        onClick={(e) => handleLinkClick(e, '/login')}
                                     >
                                         Login
                                     </Link>

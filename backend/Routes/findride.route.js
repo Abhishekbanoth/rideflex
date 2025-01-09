@@ -17,13 +17,13 @@ router.get('/', async (req, res) => {
 
 router.put('/book/:id', async (req, res) => {
     const { id } = req.params;
+    const { userId } = req.body; // Assume the user ID is passed in the request body
 
     try {
-        // Find the ride and update its status
         const ride = await OfferRide.findByIdAndUpdate(
             id,
-            { status: 'booked' }, // Add a status field
-            { new: true } // Return the updated ride
+            { status: 'booked', user: userId },
+            { new: true }
         );
 
         if (!ride) {
@@ -35,9 +35,6 @@ router.put('/book/:id', async (req, res) => {
         res.status(500).json({ message: 'Error booking ride', error: error.message });
     }
 });
-
-
-
 
 
 export default router;

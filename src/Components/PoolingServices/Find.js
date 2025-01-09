@@ -99,9 +99,10 @@ function FindRide() {
   };
 
   const handleBookNow = async (ride) => {
+    const userId = localStorage.getItem('userId'); // Retrieve the logged-in user's ID
     try {
-        await axios.put(`http://localhost:8000/findride/book/${ride._id}`);
-        alert(`Ride from ${ride.pickupLocation} to ${ride.dropoffLocation} has been booked!`);
+      await axios.put(`http://localhost:8000/findride/book/${ride._id}`, { userId });
+      alert(`Ride from ${ride.pickupLocation} to ${ride.dropoffLocation} has been booked!`);
 
         // Remove the ride from the available rides list on the frontend
         const updatedRides = filteredRides.filter((r) => r._id !== ride._id);
