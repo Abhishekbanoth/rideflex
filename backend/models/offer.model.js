@@ -37,6 +37,8 @@ const offerRideSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    otp: { type: String },
+    otpExpiry: { type: Date },
     user: { // Make user field optional
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',

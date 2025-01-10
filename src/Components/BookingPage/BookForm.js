@@ -1,6 +1,9 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, 
+    // useRef, 
+    // useEffect 
+} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import * as bootstrap from 'bootstrap'; // Import Bootstrap JS
+// import * as bootstrap from 'bootstrap'; // Import Bootstrap JS
 import CustomAlert from '../CustomAlert'; // Import your custom alert
 
 function BookForm() {
@@ -21,28 +24,28 @@ function BookForm() {
         otp:'',
         otpExpiry:'',
     });
-    const [otp, setOtp] = useState(null); // State to store OTP
-    const [otpInput, setOtpInput] = useState(''); // State for OTP input
-    const offcanvasRef = useRef(null);
+    // const [otp, setOtp] = useState(null); // State to store OTP
+    // const [otpInput, setOtpInput] = useState(''); // State for OTP input
+    // const offcanvasRef = useRef(null);
     const [alertMessage, setAlertMessage] = useState(null); // To store alert message
 
 
-    useEffect(() => {
-        // Add event listener for offcanvas close event
-        const offcanvasElement = offcanvasRef.current;
-        if (offcanvasElement) {
-            const handleOffcanvasClose = () => {
-                setOtp(null); // Reset OTP
-                setOtpInput(''); // Reset OTP input
-            };
+    // useEffect(() => {
+    //     // Add event listener for offcanvas close event
+    //     const offcanvasElement = offcanvasRef.current;
+    //     if (offcanvasElement) {
+    //         const handleOffcanvasClose = () => {
+    //             setOtp(null); // Reset OTP
+    //             setOtpInput(''); // Reset OTP input
+    //         };
 
-            offcanvasElement.addEventListener('hidden.bs.offcanvas', handleOffcanvasClose);
+    //         offcanvasElement.addEventListener('hidden.bs.offcanvas', handleOffcanvasClose);
 
-            return () => {
-                offcanvasElement.removeEventListener('hidden.bs.offcanvas', handleOffcanvasClose);
-            };
-        }
-    }, []);
+    //         return () => {
+    //             offcanvasElement.removeEventListener('hidden.bs.offcanvas', handleOffcanvasClose);
+    //         };
+    //     }
+    // }, []);
 
     const handleCheckboxChange = (e) => {
         setShowReturnTrip(e.target.checked);
@@ -72,10 +75,10 @@ function BookForm() {
             
             if (response.ok) {
                 setAlertMessage('Booking successful!');                // alert('Booking successful!');
-                if (offcanvasRef.current) {
-                    const offcanvasInstance = new bootstrap.Offcanvas(offcanvasRef.current);
-                    offcanvasInstance.show();
-                }
+                // if (offcanvasRef.current) {
+                //     const offcanvasInstance = new bootstrap.Offcanvas(offcanvasRef.current);
+                //     offcanvasInstance.show();
+                // }
             } else {
                 setAlertMessage(`Error: ${data.message}`);
             }
@@ -84,59 +87,59 @@ function BookForm() {
             setAlertMessage('Something went wrong!');
         }
     };
-    const handleGenerateOtp = async () => {
-        try {
-            const response = await fetch('http://localhost:8000/Bookings/otp', { // Assuming this is the endpoint for generating OTP
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ phoneNumber: formData.phoneNumber }),
-            });
-            const data = await response.json();
-            if (response.ok) {
-                setOtp(data.otp); // Store the OTP in state
-                setAlertMessage('OTP generated successfully!'); // Display success alert
+    // const handleGenerateOtp = async () => {
+    //     try {
+    //         const response = await fetch('http://localhost:8000/Bookings/otp', { // Assuming this is the endpoint for generating OTP
+    //             method: 'POST',
+    //             headers: { 'Content-Type': 'application/json' },
+    //             body: JSON.stringify({ phoneNumber: formData.phoneNumber }),
+    //         });
+    //         const data = await response.json();
+    //         if (response.ok) {
+    //             setOtp(data.otp); // Store the OTP in state
+    //             setAlertMessage('OTP generated successfully!'); // Display success alert
 
-                if (offcanvasRef.current) {
-                    const offcanvasInstance = new bootstrap.Offcanvas(offcanvasRef.current);
-                    offcanvasInstance.show(); // Show the offcanvas to verify OTP
-                }
-            } else {
-                setAlertMessage(`Error: ${data.message}`);
-            }
-        } catch (error) {
-            console.error('Error:', error);
-            setAlertMessage('Something went wrong while generating OTP!');
-        }
-    };
+    //             if (offcanvasRef.current) {
+    //                 const offcanvasInstance = new bootstrap.Offcanvas(offcanvasRef.current);
+    //                 offcanvasInstance.show(); // Show the offcanvas to verify OTP
+    //             }
+    //         } else {
+    //             setAlertMessage(`Error: ${data.message}`);
+    //         }
+    //     } catch (error) {
+    //         console.error('Error:', error);
+    //         setAlertMessage('Something went wrong while generating OTP!');
+    //     }
+    // };
 
-    const handleVerifyOtp = async () => {
-        if (otpInput === '') {
-            setAlertMessage('Please enter the OTP');
-            return;
-        }
+    // const handleVerifyOtp = async () => {
+    //     if (otpInput === '') {
+    //         setAlertMessage('Please enter the OTP');
+    //         return;
+    //     }
 
-        try {
-            if (otpInput === otp.toString()) {
-                setAlertMessage('OTP verified successfully!');
-                // Redirect to Google Maps with destination
-                const origin = formData.sourceLocation;
-                const destination = formData.destinationLocation;
-                const url = `https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(origin)}&destination=${encodeURIComponent(destination)}`;
-                window.open(url, '_blank'); // Open Google Maps in a new tab
-                // if (offcanvasRef.current) {
-                //     const offcanvasInstance = bootstrap.Offcanvas.getInstance(offcanvasRef.current);
-                //     if (offcanvasInstance) {
-                //         offcanvasInstance.hide();
-                //     }
-                // }
-            } else {
-                setAlertMessage('Verification failed: OTP is incorrect.');
-            }
-        } catch (error) {
-            console.error('Error:', error);
-            setAlertMessage('Something went wrong while verifying OTP!');
-        }
-    };
+    //     try {
+    //         if (otpInput === otp.toString()) {
+    //             setAlertMessage('OTP verified successfully!');
+    //             // Redirect to Google Maps with destination
+    //             const origin = formData.sourceLocation;
+    //             const destination = formData.destinationLocation;
+    //             const url = `https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(origin)}&destination=${encodeURIComponent(destination)}`;
+    //             window.open(url, '_blank'); // Open Google Maps in a new tab
+    //             // if (offcanvasRef.current) {
+    //             //     const offcanvasInstance = bootstrap.Offcanvas.getInstance(offcanvasRef.current);
+    //             //     if (offcanvasInstance) {
+    //             //         offcanvasInstance.hide();
+    //             //     }
+    //             // }
+    //         } else {
+    //             setAlertMessage('Verification failed: OTP is incorrect.');
+    //         }
+    //     } catch (error) {
+    //         console.error('Error:', error);
+    //         setAlertMessage('Something went wrong while verifying OTP!');
+    //     }
+    // };
     return (
         <div style={styles.container}>
             <form style={styles.form} onSubmit={handleSubmit}>
@@ -255,21 +258,23 @@ function BookForm() {
                 </div>
 
                 <div style={styles.submitContainer}>
-                    <button type="submit" data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottom" aria-controls="offcanvasBottom" style={styles.submitButton}>Hire Me</button>
+                    <button type="submit" 
+                    // data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottom" aria-controls="offcanvasBottom" 
+                    style={styles.submitButton}>Hire Me</button>
                 </div>
             </form>
 
 
-            <div className="offcanvas offcanvas-bottom" ref={offcanvasRef} tabIndex="-1" id="offcanvasBottom" aria-labelledby="offcanvasBottomLabel" style={{minHeight: '250px'}}>
+            {/* <div className="offcanvas offcanvas-bottom" ref={offcanvasRef} tabIndex="-1" id="offcanvasBottom" aria-labelledby="offcanvasBottomLabel" style={{minHeight: '250px'}}>
     <div className="offcanvas-header border-bottom">
         <h5 className="offcanvas-title" id="offcanvasBottomLabel" style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>Your OTP</h5>
         <button type="button" className="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
 
     <div className="offcanvas-body small" style={{ backgroundColor: '#f9f9f9', padding: '20px', borderRadius: '0 0 0.5rem 0.5rem', boxShadow: '0px -2px 10px rgba(0, 0, 0, 0.1)' }}>
-        <div className="row">
+        <div className="row"> */}
             {/* First row with Generate OTP and Verify OTP buttons */}
-            <div className="col-md-6 mb-3">
+            {/* <div className="col-md-6 mb-3">
                 <button
                     onClick={handleGenerateOtp}
                     className="btn btn-primary"
@@ -287,10 +292,10 @@ function BookForm() {
                         Verify OTP
                     </button>
                 </div>
-            )}
+            )} */}
 
             {/* Second row with OTP display and input */}
-            {otp ? (
+            {/* {otp ? (
                 <>
                     <div className="col-md-6">
                         <h3 className="text mb-3" style={{ color: '#333', fontSize: '1.2rem',marginTop: '10px', marginLeft: '295px' }}>Your OTP: <span style={{ fontWeight: 'bold' }}>{otp}</span></h3>
@@ -311,10 +316,10 @@ function BookForm() {
             )}
 
         </div>
-    </div>
+    </div> */}
     {/* Custom Alert */}
 {alertMessage && <CustomAlert message={alertMessage} onClose={() => setAlertMessage(null)} />}
-</div>
+{/* </div> */}
 
 
 
